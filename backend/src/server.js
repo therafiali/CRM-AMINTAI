@@ -21,6 +21,11 @@ app.use('/api/user', userRoutes);
 app.get('/', (req, res) => res.json({ ok: true }));
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-    console.log(`🚀 Server running on port ${PORT}`);
-});
+// On Vercel, export the app without starting the listener
+if (!process.env.VERCEL) {
+    app.listen(PORT, () => {
+        console.log(`🚀 Server running on port ${PORT}`);
+    });
+}
+
+export default app;
