@@ -1,0 +1,69 @@
+// -------------------------------------------------------------
+// Real Estate CRM - Core Auth Schema (with Relations)
+// Database: PostgreSQL (Neon)
+// ORM: Prisma
+// -------------------------------------------------------------
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// -------------------------------------------------------------
+// 🏢 Department Model
+// -------------------------------------------------------------
+model Department {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  roles     Role[]   // One department → many roles
+  users     User[]   // One department → many users
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// -------------------------------------------------------------
+// 🧩 Role Model (Now belongs to Department)
+// -------------------------------------------------------------
+model Role {
+  id            Int        @id @default(autoincrement())
+  name          String
+  departmentId  Int        // Each role belongs to a department
+  department    Department @relation(fields: [departmentId], references: [id])
+  users         User[]     // One role → many users
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  // Prevent duplicate role names within same department
+  @@unique([name, departmentId])
+  @@index([departmentId])
+}
+
+// -------------------------------------------------------------
+// 👤 User Model
+// -------------------------------------------------------------
+model User {
+  id           Int        @id @default(autoincrement())
+  name         String
+  email        String     @unique
+  password     String
+  isActive     Boolean    @default(true)
+
+  // Foreign keys
+  departmentId Int?
+  roleId       Int
+
+  // Relations
+  department   Department? @relation(fields: [departmentId], references: [id])
+  role         Role        @relation(fields: [roleId], references: [id])
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([email])
+  @@index([departmentId])
+  @@index([roleId])
+}
