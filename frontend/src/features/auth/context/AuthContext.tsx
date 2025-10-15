@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                     return;
                 }
 
-                const profile = await userApi.getMe(token);
+                const profile = await userApi.getMe();
                 setUser(profile);
             } catch (err: unknown) {
                 // Only clear auth on explicit auth failures

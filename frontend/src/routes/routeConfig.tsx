@@ -12,7 +12,7 @@ export type AppRoute = {
 };
 
 export const appRoutes: AppRoute[] = [
-    { path: "/", label: "Dashboard", element: <App /> },
+    { path: "/", label: "Users", element: <App /> },
     { path: "/leads", label: "Leads", element: <LeadsPage /> },
     // Example future pages (uncomment when pages exist)
     // { path: "/users", label: "Users", element: <UsersPage />, roles: [1] },

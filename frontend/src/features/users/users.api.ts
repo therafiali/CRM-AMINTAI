@@ -72,7 +72,7 @@ export type ListUsersResult = {
 };
 
 export const usersApi = {
-    list: async (params: ListUsersParams = {}, token?: string): Promise<ListUsersResult> => {
+    list: async (params: ListUsersParams = {}): Promise<ListUsersResult> => {
         const q = new URLSearchParams();
         if (params.page) q.set("page", String(params.page));
         if (params.limit) q.set("limit", String(params.limit));
@@ -81,7 +81,7 @@ export const usersApi = {
         if (params.q) q.set("q", params.q);
         const query = q.toString();
         const url = query ? `/user?${query}` : "/user";
-        const envelope = await http.get<unknown>(url, token);
+        const envelope = await http.get<unknown>(url);
         const parsed = apiUsersEnvelopeWithMetaSchema.parse(envelope);
         const items: UserListItem[] = parsed.data.map((u) => ({
             id: u.id,
