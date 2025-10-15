@@ -3,7 +3,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { LoginPage } from "./features/login/LoginPage";
 import { RegisterPage } from "@/features/register/RegisterPage";
 import { PrivateRoute } from "./components/PrivateRoute";
-import App from "./App";
+import { AppLayout } from "@/components/layout/AppLayout";
+import { appRoutes } from "@/routes/routeConfig";
 
 
 const router = createBrowserRouter([
@@ -12,7 +13,10 @@ const router = createBrowserRouter([
     {
         element: <PrivateRoute />,
         children: [
-            { path: "/", element: <App /> },
+            {
+                element: <AppLayout />,
+                children: appRoutes.map((r) => ({ path: r.path, element: r.element })),
+            },
         ],
     },
     { path: "*", element: <LoginPage /> },

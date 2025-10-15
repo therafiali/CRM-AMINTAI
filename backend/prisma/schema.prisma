@@ -2,7 +2,10 @@
 // Real Estate CRM - Core Auth Schema (with Relations)
 // Database: PostgreSQL (Neon)
 // ORM: Prisma
+//npx prisma migrate dev --name add_lead_model
 // -------------------------------------------------------------
+
+
 
 generator client {
   provider = "prisma-client-js"
@@ -59,6 +62,7 @@ model User {
   // Relations
   department   Department? @relation(fields: [departmentId], references: [id])
   role         Role        @relation(fields: [roleId], references: [id])
+  leads        Lead[]      @relation("UserLeads")   // 
 
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
@@ -66,4 +70,29 @@ model User {
   @@index([email])
   @@index([departmentId])
   @@index([roleId])
+}
+
+
+
+// -------------------------------------------------------------
+// 🧲 Lead Model
+// -------------------------------------------------------------
+model Lead {
+  id           Int        @id @default(autoincrement())
+  name         String
+  email        String?
+  phone        String?
+  status       String      @default("New")
+  source       String?
+  notes        String?
+  assignedToId Int?
+
+  // Relations
+  assignedTo   User?       @relation("UserLeads", fields: [assignedToId], references: [id])
+
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  @@index([assignedToId])
+  @@index([status])
 }

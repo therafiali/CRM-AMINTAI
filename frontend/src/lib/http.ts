@@ -1,3 +1,5 @@
+import { authStorage } from "@/features/auth/auth-storage";
+
 const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:5000/api";
 
 export interface ApiError {
@@ -9,8 +11,9 @@ export interface ApiError {
 async function request<T>(
     path: string,
     options: RequestInit = {},
-    token?: string | null
 ): Promise<T> {
+
+    const token = authStorage.getToken();
     const headers: HeadersInit = {
         "Content-Type": "application/json",
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -18,6 +21,17 @@ async function request<T>(
     };
 
     const res = await fetch(`${API_BASE}${path}`, { ...options, headers });
+
+    // 🔥 Handle unauthorized / forbidden globally
+    if (res.status === 401 || res.status === 403) {
+        authStorage.clear();
+        // Optional: redirect to login page (if in browser)
+        if (typeof window !== "undefined") {
+            window.location.href = "/login";
+        }
+        throw new Error("Unauthorized or session expired");
+    }
+
     if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         const err: ApiError = {
@@ -33,10 +47,12 @@ async function request<T>(
 
 
 export const http = {
-    get: <T>(url: string, token?: string) => request<T>(url, { method: "GET" }, token),
-    post: <T>(url: string, body: unknown, token?: string) =>
-        request<T>(url, { method: "POST", body: JSON.stringify(body) }, token),
-    put: <T>(url: string, body: unknown, token?: string) =>
-        request<T>(url, { method: "PUT", body: JSON.stringify(body) }, token),
-    del: <T>(url: string, token?: string) => request<T>(url, { method: "DELETE" }, token),
+    get: <T>(url: string) => request<T>(url, { method: "GET" }),
+    post: <T>(url: string, body: unknown) =>
+        request<T>(url, { method: "POST", body: JSON.stringify(body) }),
+    put: <T>(url: string, body: unknown) =>
+        request<T>(url, { method: "PUT", body: JSON.stringify(body) }),
+    patch: <T>(url: string, body?: unknown) =>
+        request<T>(url, { method: "PATCH", body: body ? JSON.stringify(body) : undefined }),
+    del: <T>(url: string) => request<T>(url, { method: "DELETE" }),
 };
