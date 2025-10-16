@@ -1,11 +1,7 @@
 import { DataTable, useUrlTableState } from "@/components/table";
-<<<<<<< HEAD
-import { useUsers } from "@/features/users/hooks/useUsers";
-=======
 import SalesSummaryCards from "@/features/leads/SalesSummarycard";
 import { useUsers } from "@/features/users/hooks/useUsers";
 import { ShieldCheck, UserPlus, Users, UserX } from "lucide-react";
->>>>>>> 171e6a2 (UI better)
 
 type RowUser = {
     id: string;
@@ -33,9 +29,6 @@ export function UsersList() {
     }));
     const total = data?.meta.total ?? 0;
 
-<<<<<<< HEAD
-    return (
-=======
 
     const userStats = [
     {
@@ -72,7 +65,6 @@ export function UsersList() {
     return (
         <>
         <SalesSummaryCards cards={userStats} />
->>>>>>> 171e6a2 (UI better)
         <DataTable<RowUser>
             columns={[
                 { key: "name", header: "Name", sortable: true },
@@ -97,10 +89,7 @@ export function UsersList() {
         //     { label: "Edit", variant: "primary", onClick: (r: RowUser) => alert(`Edit ${r.name}`) },
         // ]}
         />
-<<<<<<< HEAD
-=======
         </>
->>>>>>> 171e6a2 (UI better)
     );
 }
 

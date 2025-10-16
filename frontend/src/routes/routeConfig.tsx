@@ -1,32 +1,3 @@
-<<<<<<< HEAD
-import type { ReactNode } from "react";
-import App from "@/App";
-import LeadsPage from "@/features/leads/LeadsPage";
-
-// Minimal route shape with optional roles and hidden flag
-export type AppRoute = {
-    path: string;
-    label: string;
-    element: ReactNode;
-    roles?: number[]; // if set, only these roleIds can access
-    hidden?: boolean; // hide from sidebar navigation
-};
-
-export const appRoutes: AppRoute[] = [
-    { path: "/", label: "Users", element: <App /> },
-    { path: "/leads", label: "Leads", element: <LeadsPage /> },
-    // Example future pages (uncomment when pages exist)
-    // { path: "/users", label: "Users", element: <UsersPage />, roles: [1] },
-    // { path: "/settings", label: "Settings", element: <SettingsPage /> },
-];
-
-export function canAccessRoute(route: AppRoute, userRoleId?: number | null): boolean {
-    if (!route.roles || route.roles.length === 0) return true;
-    return route.roles.includes(userRoleId ?? -1);
-}
-
-
-=======
 import type { ReactNode, ElementType } from "react"
 
 // ✅ Import your pages
@@ -36,7 +7,10 @@ import { LeadsSales } from "@/features/leads/LeadSalesPage"
 import DashboardPage from "@/features/dashboard/DashboardPage"
 
 // ✅ Import Lucide icons (used in Sidebar)
-import { Home, Users, PhoneCall, BarChart3 } from "lucide-react"
+import { Home, Users, PhoneCall, BarChart3, Contact, HousePlus } from "lucide-react"
+import ContactsPage from "@/features/contacts/ContactPage"
+import PropertiesPage from "@/features/property/PropertyPage"
+import DealsPage from "@/features/deals/DealPage"
 
 /**
  * Route type used across the app.
@@ -75,6 +49,24 @@ export const appRoutes: AppRoute[] = [
     icon: BarChart3,
   },
   {
+    path: "/contact",
+    label: "Contact",
+    element: <ContactsPage />,
+    icon: Contact,
+  },
+  {
+    path: "/property",
+    label: "Property",
+    element: < PropertiesPage />,
+    icon: HousePlus,
+  },
+  {
+    path: "/deal",
+    label: "Deals",
+    element: < DealsPage />,
+    icon: HousePlus,
+  },
+  {
     path: "/users",
     label: "Users",
     element: <App />,
@@ -101,4 +93,3 @@ export function canAccessRoute(
   if (!route.roles || route.roles.length === 0) return true
   return route.roles.includes(userRoleId ?? -1)
 }
->>>>>>> 171e6a2 (UI better)

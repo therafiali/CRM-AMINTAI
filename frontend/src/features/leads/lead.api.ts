@@ -112,10 +112,7 @@ export const leadsApi = {
             status: l.status,
             source: l.source ?? null,
             notes: l.notes ?? null,
-<<<<<<< HEAD
-=======
             assignedToId: l.assignedToId ?? null,
->>>>>>> 171e6a2 (UI better)
             assignedToName: l.assignedTo?.name ?? null,
             assignedToEmail: l.assignedTo?.email ?? null,
             createdAt: l.createdAt,
