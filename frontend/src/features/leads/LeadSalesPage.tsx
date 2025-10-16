@@ -1,9 +1,9 @@
 import { DataTable, useUrlTableState } from "@/components/table";
 import { useLeads } from "@/features/leads/hooks/useLeads";
 import { useUpdateLead } from "./hooks/mutations/useUpdateLeads";
-import { UserSelectPopover } from "@/components/layout/UserSelectPopover";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import SalesSummaryCards from "./SalesSummarycard";
+
 
 type RowLead = {
   id: string;
