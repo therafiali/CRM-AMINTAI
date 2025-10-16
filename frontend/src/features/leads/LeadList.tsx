@@ -2,8 +2,9 @@ import { DataTable, useUrlTableState } from "@/components/table";
 import { useLeads } from "@/features/leads/hooks/useLeads";
 import { useUpdateLead } from "./hooks/mutations/useUpdateLeads";
 import { UserSelectPopover } from "@/components/layout/UserSelectPopover";
-import SalesSummaryCards from "./SalesSummarycard";
+
 import { AlertCircle, CheckCircle2, User, UserPlus } from "lucide-react";
+import SalesSummaryCards from "./SalesSummaryCard";
 
 type RowLead = {
   id: string;
