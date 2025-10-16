@@ -2,7 +2,8 @@ import { DataTable, useUrlTableState } from "@/components/table";
 import { useLeads } from "@/features/leads/hooks/useLeads";
 import { useUpdateLead } from "./hooks/mutations/useUpdateLeads";
 import { StatusBadge } from "@/components/ui/StatusBadge";
-import SalesSummaryCards from "./SalesSummarycard";
+import SalesSummaryCards from "@/features/leads/SalesSummaryCard";
+
 
 
 type RowLead = {

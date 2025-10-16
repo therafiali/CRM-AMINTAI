@@ -1,5 +1,6 @@
 import { DataTable, useUrlTableState } from "@/components/table";
-import SalesSummaryCards from "@/features/leads/SalesSummarycard";
+import SalesSummaryCards from "@/features/leads/SalesSummaryCard";
+
 import { useUsers } from "@/features/users/hooks/useUsers";
 import { ShieldCheck, UserPlus, Users, UserX } from "lucide-react";
 
