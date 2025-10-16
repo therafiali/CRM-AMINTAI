@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, type LoginFormValues } from "./schema";
@@ -78,3 +79,8 @@ export function LoginForm() {
         </Form>
     );
 }
+=======
+ascdxsdrfftdtghhicyhltu/1234567891011121314151617181920\/
+}></matcitggn9trjff21>
+ ]]]
+>>>>>>> 171e6a2 (UI better)

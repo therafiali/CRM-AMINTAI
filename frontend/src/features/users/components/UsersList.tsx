@@ -1,5 +1,11 @@
 import { DataTable, useUrlTableState } from "@/components/table";
+<<<<<<< HEAD
 import { useUsers } from "@/features/users/hooks/useUsers";
+=======
+import SalesSummaryCards from "@/features/leads/SalesSummarycard";
+import { useUsers } from "@/features/users/hooks/useUsers";
+import { ShieldCheck, UserPlus, Users, UserX } from "lucide-react";
+>>>>>>> 171e6a2 (UI better)
 
 type RowUser = {
     id: string;
@@ -27,7 +33,46 @@ export function UsersList() {
     }));
     const total = data?.meta.total ?? 0;
 
+<<<<<<< HEAD
     return (
+=======
+
+    const userStats = [
+    {
+      label: "Total Users",
+      value: 56,
+      icon: Users,
+      gradient: "from-blue-500/10 to-blue-500/5",
+      iconColor: "text-blue-500",
+    },
+    {
+      label: "New This Month",
+      value: 8,
+      icon: UserPlus,
+      gradient: "from-green-500/10 to-green-500/5",
+      iconColor: "text-green-500",
+    },
+    {
+      label: "Active Roles",
+      value: 4,
+      icon: ShieldCheck,
+      gradient: "from-purple-500/10 to-purple-500/5",
+      iconColor: "text-purple-500",
+    },
+    {
+      label: "Inactive Users",
+      value: 2,
+      icon: UserX,
+      gradient: "from-red-500/10 to-red-500/5",
+      iconColor: "text-red-500",
+    },
+  ]
+
+
+    return (
+        <>
+        <SalesSummaryCards cards={userStats} />
+>>>>>>> 171e6a2 (UI better)
         <DataTable<RowUser>
             columns={[
                 { key: "name", header: "Name", sortable: true },
@@ -52,6 +97,10 @@ export function UsersList() {
         //     { label: "Edit", variant: "primary", onClick: (r: RowUser) => alert(`Edit ${r.name}`) },
         // ]}
         />
+<<<<<<< HEAD
+=======
+        </>
+>>>>>>> 171e6a2 (UI better)
     );
 }
 
