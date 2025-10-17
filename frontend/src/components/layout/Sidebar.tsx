@@ -11,6 +11,7 @@ import { UserCircle2, LogOut } from "lucide-react";
 import { motion } from "framer-motion";
 import Logo from "../../assets/logo-black.png";
 import profile from "../../assets/profile.avif";
+import WhatsAppCallTracker from "../WhatsAppCallTracker";
 
 export function Sidebar() {
   const { user, isLoading } = useUser();
@@ -64,6 +65,14 @@ export function Sidebar() {
           </motion.div>
         ))}
       </SidebarNav>
+
+       <div>
+      <WhatsAppCallTracker
+        customerNumber="+923190269909rr"
+        customerName="John Doe"
+        agentId="agent123"
+      />
+    </div>
 
       {/* --- User Info + Logout --- */}
       <div className="mt-4 pt-4 border-t border-border/30">
