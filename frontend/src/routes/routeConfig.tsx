@@ -11,6 +11,7 @@ import { Home, Users, PhoneCall, BarChart3, Contact, HousePlus } from "lucide-re
 import ContactsPage from "@/features/contacts/ContactPage"
 import PropertiesPage from "@/features/property/PropertyPage"
 import DealsPage from "@/features/deals/DealPage"
+import CallTracker from "@/components/WhatsAppCallTracker"
 
 /**
  * Route type used across the app.
@@ -64,6 +65,17 @@ export const appRoutes: AppRoute[] = [
     path: "/deal",
     label: "Deals",
     element: < DealsPage />,
+    icon: HousePlus,
+  },
+  {
+    path: "/dail-demo",
+    label: "CALL DEMO",
+    element: // In your parent component
+      <CallTracker
+        customerNumber="+923190269909"
+        customerName="Rafi Ali"
+        agentId="agent_001"
+      />,
     icon: HousePlus,
   },
   {

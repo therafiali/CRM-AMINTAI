@@ -15,11 +15,14 @@ import {
 import { useState } from "react";
 
 const STATIC_ROLES = [
-    { id: 2, name: "Software Engineer" },
+    { id: 4, name: "sales-manager" },
+    { id: 5, name: "sales-agent" },
+    { id: 6, name: "admin" },
 ];
 
 const STATIC_DEPARTMENTS = [
-    { id: 2, name: "Software" },
+    { id: 4, name: "sales" },
+    { id: 6, name: "admin" },
 ];
 
 export function RegisterForm() {
@@ -114,7 +117,7 @@ export function RegisterForm() {
                                     onChange={(e) => field.onChange(Number(e.target.value))}
                                 >
                                     {STATIC_DEPARTMENTS.map((d) => (
-                                        <option key={d.id} value={d.id}>{d.name}</option>
+                                        <option key={d.id} value={d.id}>{d.name.toUpperCase()}</option>
                                     ))}
                                 </select>
                             </FormControl>
@@ -136,7 +139,7 @@ export function RegisterForm() {
                                     onChange={(e) => field.onChange(Number(e.target.value))}
                                 >
                                     {STATIC_ROLES.map((r) => (
-                                        <option key={r.id} value={r.id}>{r.name}</option>
+                                        <option key={r.id} value={r.id}>{r.name.toUpperCase()}</option>
                                     ))}
                                 </select>
                             </FormControl>

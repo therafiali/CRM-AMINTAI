@@ -1,10 +1,8 @@
 import { DataTable, useUrlTableState } from "@/components/table";
 import { useLeads } from "@/features/leads/hooks/useLeads";
 import { useUpdateLead } from "./hooks/mutations/useUpdateLeads";
-import { StatusBadge } from "@/components/ui/StatusBadge";
+import { StatusBadge, type LeadStatus } from "@/components/ui/StatusBadge"; // Updated import
 import SalesSummaryCards from "@/features/leads/SalesSummaryCard";
-
-
 
 type RowLead = {
   id: string;
@@ -33,9 +31,14 @@ export function LeadsSales() {
     sortDir: sortDir || undefined,
   });
 
-  console.log(data);
-
   const updateMutation = useUpdateLead();
+
+  const handleStatusUpdate = (leadId: number, newStatus: LeadStatus) => {
+    updateMutation.mutate({
+      id: leadId,
+      payload: { status: newStatus },
+    });
+  };
 
   const rows: RowLead[] = (data?.items ?? []).map((l) => ({
     id: String(l.id),
@@ -50,30 +53,6 @@ export function LeadsSales() {
 
   const total = data?.meta.total ?? 0;
 
-  const rowActions = [
-    {
-      label: "Mark Contacted",
-      variant: "primary" as const,
-      onClick: (row: any) => {
-        // disable double-click while mutation pending for this row?
-        updateMutation.mutate({
-          id: Number(row.id),
-          payload: { status: "Contacted" },
-        });
-      },
-    },
-    {
-      label: "Mark Lost",
-      variant: "danger" as const,
-      onClick: (row: any) => {
-        updateMutation.mutate({
-          id: Number(row.id),
-          payload: { status: "Lost" },
-        });
-      },
-    },
-  ];
-
   return (
     <section className="mt-10 px-2">
       <h1 className="scroll-m-20 my-8 text-start text-4xl font-extrabold tracking-tight text-balance">
@@ -85,29 +64,23 @@ export function LeadsSales() {
           { key: "name", header: "Name", sortable: true },
           { key: "email", header: "Email" },
           { key: "phone", header: "Phone" },
+          { key: "source", header: "Source" },
+          { key: "createdAt", header: "Created", sortable: true },
+          { key: "assignedTo", header: "Assigned To", sortable: true },
           {
             key: "status",
             header: "Status",
             sortable: true,
-            render: (row) => <StatusBadge status={row.status} />,
+            render: (row) => (
+              <StatusBadge
+                status={row.status}
+                onStatusChange={(newStatus) => 
+                  handleStatusUpdate(Number(row.id), newStatus)
+                }
+                isLoading={updateMutation.isPending && updateMutation.variables?.id === Number(row.id)}
+              />
+            ),
           },
-
-          { key: "source", header: "Source" },
-          { key: "createdAt", header: "Created", sortable: true },
-          { key: "assignedTo", header: "Assigned To", sortable: true },
-          //   {
-          //     key: "assignedTo",
-          //     header: "Assigned To",
-          //     render: (row) =>
-          //       row.assignedTo === "Unassigned" ? (
-          //         <div className="flex items-center gap-2">
-          //           <span className="text-muted-foreground">Unassigned</span>
-          //           <UserSelectPopover />
-          //         </div>
-          //       ) : (
-          //         <span>{row.assignedTo}</span>
-          //       ),
-          //   },
         ]}
         rows={rows}
         keyField="id"
@@ -121,7 +94,6 @@ export function LeadsSales() {
         total={total}
         onPageChange={setPage}
         onPageSizeChange={setPageSize}
-        //   rowActions={rowActions}
       />
     </section>
   );

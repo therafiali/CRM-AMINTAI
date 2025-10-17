@@ -3,13 +3,14 @@ import { Sidebar } from "./Sidebar";
 
 export function AppLayout() {
     return (
-        <div className="h-screen w-full grid grid-cols-[15rem_1fr]">
+        <div className="h-screen w-full flex flex-col md:flex-row">
+            {/* Sidebar component handles its own visibility */}
             <Sidebar />
-            <main className="h-full overflow-auto">
+            
+            {/* Main content with proper spacing */}
+            <main className="flex-1 h-full overflow-auto md:ml-0 pt-16 md:pt-0">
                 <Outlet />
             </main>
         </div>
     );
 }
-
-
