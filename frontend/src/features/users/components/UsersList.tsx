@@ -1,4 +1,5 @@
 import { DataTable, useUrlTableState } from "@/components/table";
+import { RoleBasedRoute } from "@/features/auth/RoleBasedRoute";
 import SalesSummaryCards from "@/features/leads/SalesSummaryCard";
 
 import { useUsers } from "@/features/users/hooks/useUsers";
@@ -64,7 +65,7 @@ export function UsersList() {
 
 
     return (
-        <>
+        <RoleBasedRoute allowedRoles={['admin']}>
         <SalesSummaryCards cards={userStats} />
         <DataTable<RowUser>
             columns={[
@@ -90,7 +91,7 @@ export function UsersList() {
         //     { label: "Edit", variant: "primary", onClick: (r: RowUser) => alert(`Edit ${r.name}`) },
         // ]}
         />
-        </>
+        </RoleBasedRoute>
     );
 }
 
