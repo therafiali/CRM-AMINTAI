@@ -43,6 +43,30 @@ const apiUsersEnvelopeWithMetaSchema = z.object({
     }),
 });
 
+
+const apiUsernameResponseSchema = z.object({
+  success: z.boolean(),
+}).catchall(
+  z.object({
+    id: z.number(),
+    name: z.string(),
+  })
+);
+
+
+export type UsernameItem = {
+  id: number;
+  name: string;
+};
+
+
+
+export type UsernameResponse = {
+  users: UsernameItem[];
+  success: boolean;
+};
+
+
 export type UserListItem = {
     id: number;
     name: string;
@@ -92,6 +116,29 @@ export const usersApi = {
         }));
         return { items, meta: parsed.meta };
     },
+
+
+        usernames: async (): Promise<UsernameResponse> => {
+        const response = await http.get<unknown>("/user/username");
+        const parsed = apiUsernameResponseSchema.parse(response);
+        
+        // Convert the object format to array
+        const users: UsernameItem[] = Object.entries(parsed)
+            .filter(([key]) => key !== "success")
+            .map(([_, value]) => ({
+                id: (value as any).id,
+                name: (value as any).name,
+            }));
+console.log('user11',users)
+        return {
+            users,
+            success: parsed.success,
+        };
+    },
+    
 };
+
+
+
 
 

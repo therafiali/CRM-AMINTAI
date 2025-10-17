@@ -5,6 +5,9 @@ import { UserSelectPopover } from "@/components/layout/UserSelectPopover";
 
 import { AlertCircle, CheckCircle2, User, UserPlus } from "lucide-react";
 import SalesSummaryCards from "./SalesSummaryCard";
+import { useState } from "react";
+import { useAssignLead } from "./hooks/mutations/useAssignLead";
+import { toast } from "sonner";
 
 type RowLead = {
   id: string;
@@ -18,8 +21,31 @@ type RowLead = {
 };
 
 export function LeadsList() {
+  const [assigningLeadId, setAssigningLeadId] = useState<string | null>(null);
 
-    const assignmentStats = [
+  const assignMutation = useAssignLead({
+    onSuccess: () => {
+      toast.success("Lead assigned successfully");
+      setAssigningLeadId(null);
+    },
+    onError: () => {
+      toast.error("Failed to assign lead");
+      setAssigningLeadId(null);
+    },
+  });
+
+  const handleUserAssign = (
+    leadId: string,
+    user: { id: string; name: string }
+  ) => {
+    setAssigningLeadId(leadId);
+    assignMutation.mutate({
+      leadId: parseInt(leadId),
+      userId: user.id,
+    });
+  };
+
+  const assignmentStats = [
     {
       label: "Unassigned Leads",
       value: 42,
@@ -48,8 +74,7 @@ export function LeadsList() {
       gradient: "from-yellow-500/10 to-yellow-500/5",
       iconColor: "text-yellow-500",
     },
-  ]
-
+  ];
 
   const { page, pageSize, sortBy, sortDir, setPage, setPageSize, setSort } =
     useUrlTableState({
@@ -109,43 +134,47 @@ export function LeadsList() {
 
   return (
     <>
-    <SalesSummaryCards cards={assignmentStats} />
-    <DataTable<RowLead>
-      columns={[
-        { key: "name", header: "Name", sortable: true },
-        { key: "email", header: "Email" },
-        { key: "phone", header: "Phone" },
-        // { key: "status", header: "Status", sortable: true },
-        { key: "source", header: "Source" },
-        { key: "createdAt", header: "Created", sortable: true },
-        {
-          key: "assignedTo",
-          header: "Assigned To",
-          render: (row) =>
-            row.assignedTo === "Unassigned" ? (
-              <div className="flex items-center gap-2">
-                <span className="text-muted-foreground">Unassigned</span>
-                <UserSelectPopover />
-              </div>
-            ) : (
-              <span>{row.assignedTo}</span>
-            ),
-        },
-      ]}
-      rows={rows}
-      keyField="id"
-      isLoading={isLoading}
-      error={error ? (error as any)?.message || "Failed to load leads" : null}
-      sortBy={sortBy}
-      sortDir={sortDir}
-      onSortChange={setSort}
-      page={page}
-      pageSize={pageSize}
-      total={total}
-      onPageChange={setPage}
-      onPageSizeChange={setPageSize}
-      //   rowActions={rowActions}
-    />
+      <SalesSummaryCards cards={assignmentStats} />
+      <DataTable<RowLead>
+        columns={[
+          { key: "name", header: "Name", sortable: true },
+          { key: "email", header: "Email" },
+          { key: "phone", header: "Phone" },
+          // { key: "status", header: "Status", sortable: true },
+          { key: "source", header: "Source" },
+          { key: "createdAt", header: "Created", sortable: true },
+          {
+            key: "assignedTo",
+            header: "Assigned To",
+            render: (row) =>
+              row.assignedTo === "Unassigned" ? (
+                <div className="flex items-center gap-2">
+                  <span className="text-muted-foreground">Unassigned</span>
+                  <UserSelectPopover
+                    onUserSelect={(user) => handleUserAssign(row.id, user)}
+                    isLoading={assigningLeadId === row.id}
+                    disabled={assigningLeadId !== null}
+                  />
+                </div>
+              ) : (
+                <span>{row.assignedTo}</span>
+              ),
+          },
+        ]}
+        rows={rows}
+        keyField="id"
+        isLoading={isLoading}
+        error={error ? (error as any)?.message || "Failed to load leads" : null}
+        sortBy={sortBy}
+        sortDir={sortDir}
+        onSortChange={setSort}
+        page={page}
+        pageSize={pageSize}
+        total={total}
+        onPageChange={setPage}
+        onPageSizeChange={setPageSize}
+        //   rowActions={rowActions}
+      />
     </>
   );
 }
