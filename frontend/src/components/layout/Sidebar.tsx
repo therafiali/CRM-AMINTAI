@@ -51,7 +51,7 @@ export function Sidebar() {
         <div className="flex items-center gap-2">
           <img src={Logo} alt="logo" className="w-auto h-12 lg:h-20" />
         </div>
-        
+
         {/* Close button for mobile */}
         <button
           onClick={() => setIsMobileOpen(false)}
@@ -75,10 +75,9 @@ export function Sidebar() {
               end
               onClick={() => setIsMobileOpen(false)}
               className={({ isActive }) =>
-                `flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-all duration-150 ${
-                  isActive
-                    ? "bg-primary text-primary-foreground shadow-sm"
-                    : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
+                `flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-all duration-150 ${isActive
+                  ? "bg-primary text-primary-foreground shadow-sm"
+                  : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
                 }`
               }
             >
@@ -90,7 +89,7 @@ export function Sidebar() {
       </SidebarNav>
 
       {/* --- User Info + Logout --- */}
-      <div className="mt-4 pt-4 border-t border-border/30 p-2">
+      <div className="mt-4 pt-4 border-t border-border border-black p-2">
         {isLoading ? (
           <p className="text-xs text-muted-foreground">Loading user...</p>
         ) : user ? (
@@ -113,14 +112,14 @@ export function Sidebar() {
         ) : (
           <p className="text-xs text-muted-foreground">No user found</p>
         )}
-            <LogoutButton
-              asChild
-              className="text-muted-foreground hover:text-destructive transition m-4 w-full"
-            >
-              <button title="Logout" className="p-1 rounded-md hover:bg-muted">
-              Logout   <LogOut className="h-4 w-4" />
-              </button>
-            </LogoutButton>
+        <LogoutButton
+          asChild
+          className="text-muted-foreground hover:text-destructive transition m-4 w-full border-2 border-black hover:border-orange-500 hover:bg-orange-100 "
+        >
+          <button title="Logout" className="p-1 rounded-md hover:bg-muted text-black">
+            <span className="text-black" >Logout </span>  <LogOut className="h-4 w-4 text-black" />
+          </button>
+        </LogoutButton>
       </div>
     </>
   );
@@ -154,7 +153,7 @@ export function Sidebar() {
               onClick={() => setIsMobileOpen(false)}
               className="fixed inset-0 bg-black/50 z-40 md:hidden"
             />
-            
+
             {/* Mobile Sidebar */}
             <motion.div
               initial={{ x: -280 }}

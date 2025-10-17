@@ -1,8 +1,7 @@
-// Add this component
-// src/features/deals/components/desktop-filter-panel.tsx
+// Updated DesktopFilterPanel to use assignedTo instead of locations
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { extractLocation, type Deal } from "./data/deals-dummy-data";
+import type { Deal } from "./simplified-deal-pipeline";
 
 interface DesktopFilterPanelProps {
   filters: {
@@ -16,13 +15,13 @@ interface DesktopFilterPanelProps {
 }
 
 export function DesktopFilterPanel({ filters, onFilterChange, allDeals }: DesktopFilterPanelProps) {
-  const allLocations = [...new Set(allDeals.map(deal => extractLocation(deal.propertyAddress)))];
+  const allAssignedTo = [...new Set(allDeals.map(deal => deal.assignedTo || "Unassigned"))];
   const allStatuses = [...new Set(allDeals.map(deal => deal.stage))];
 
-  const toggleLocation = (location: string) => {
-    const newLocations = filters.locations.includes(location)
-      ? filters.locations.filter(l => l !== location)
-      : [...filters.locations, location];
+  const toggleAssignedTo = (assignedTo: string) => {
+    const newLocations = filters.locations.includes(assignedTo)
+      ? filters.locations.filter(l => l !== assignedTo)
+      : [...filters.locations, assignedTo];
     onFilterChange({ ...filters, locations: newLocations });
   };
 
@@ -36,18 +35,18 @@ export function DesktopFilterPanel({ filters, onFilterChange, allDeals }: Deskto
   return (
     <div className="hidden md:block bg-muted/30 p-4 rounded-lg mb-4">
       <div className="grid grid-cols-2 gap-6">
-        {/* Locations */}
+        {/* Assigned To */}
         <div className="space-y-3">
-          <Label className="text-sm font-medium">Locations</Label>
+          <Label className="text-sm font-medium">Assigned To</Label>
           <div className="flex flex-wrap gap-2">
-            {allLocations.map((location) => (
+            {allAssignedTo.map((assignedTo) => (
               <Badge
-                key={location}
-                variant={filters.locations.includes(location) ? "default" : "outline"}
+                key={assignedTo}
+                variant={filters.locations.includes(assignedTo) ? "default" : "outline"}
                 className="cursor-pointer text-xs"
-                onClick={() => toggleLocation(location)}
+                onClick={() => toggleAssignedTo(assignedTo)}
               >
-                {location}
+                {assignedTo}
               </Badge>
             ))}
           </div>
