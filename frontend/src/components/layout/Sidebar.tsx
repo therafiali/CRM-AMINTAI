@@ -12,6 +12,7 @@ import { motion } from "framer-motion";
 import Logo from "../../assets/logo-black.png";
 import profile from "../../assets/profile.avif";
 import WhatsAppCallTracker from "../WhatsAppCallTracker";
+import CallTracker from "../WhatsAppCallTracker";
 
 export function Sidebar() {
   const { user, isLoading } = useUser();
@@ -67,11 +68,12 @@ export function Sidebar() {
       </SidebarNav>
 
        <div>
-      <WhatsAppCallTracker
-        customerNumber="+923190269909rr"
-        customerName="John Doe"
-        agentId="agent123"
-      />
+     // In your parent component
+<CallTracker
+  customerNumber="+923190269909"
+  customerName="Sarah Johnson"
+  agentId="agent_001"
+/>
     </div>
 
       {/* --- User Info + Logout --- */}
