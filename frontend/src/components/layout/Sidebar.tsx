@@ -162,7 +162,7 @@ export function Sidebar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsMobileOpen(false)}
-              className="fixed inset-0 bg-black/90 z-40 md:hidden"
+              className="fixed inset-0 bg-black/70 z-40 md:hidden"
             />
 
             {/* Mobile Sidebar */}
@@ -171,7 +171,7 @@ export function Sidebar() {
               animate={{ x: 0 }}
               exit={{ x: -280 }}
               transition={{ type: "tween", duration: 0.3 }}
-              className="fixed top-0 left-0 h-full w-72 z-50 md:hidden bg-gradient-to-b from-background to-muted/30 border-r border-border/50 p-4"
+              className="fixed top-0 left-0 h-full w-72 z-50 md:hidden bg-white  border-r border-border/50 p-4"
             >
               {sidebarContent}
             </motion.div>
