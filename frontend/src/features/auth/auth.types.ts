@@ -42,6 +42,7 @@ export interface User {
     isActive: boolean;
     departmentId?: number | null;
     roleId?: number | null;
+    roleName?: string
     createdAt: string;
     updatedAt: string;
 }

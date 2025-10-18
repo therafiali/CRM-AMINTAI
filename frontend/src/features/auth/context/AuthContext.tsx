@@ -2,7 +2,7 @@ import { createContext, useContext, useState, useEffect, type ReactNode } from "
 import type { User } from "../auth.types";
 import { authStorage } from "../auth-storage";
 import { userApi } from "@/features/auth/user.api";
-import { isJwtExpired, decodeJwt } from "../token"; // decodeJwt import kiya
+import { isJwtExpired, decodeJwt } from "../token";
 
 interface AuthContextType {
     user: User | null;
@@ -22,24 +22,30 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [isHydrating, setIsHydrating] = useState(false);
     const [userRole, setUserRole] = useState<string | null>(null);
 
+    // Extract role from token whenever token changes
     useEffect(() => {
-        // Token se role extract karo
         if (token) {
             try {
                 const decoded = decodeJwt(token);
-                setUserRole(decoded.roleName as string); // type cast karo
+                console.log("decoded", decoded);
+                setUserRole(decoded?.roleName as string);
             } catch (error) {
                 console.error("Failed to decode token:", error);
                 setUserRole(null);
             }
+        } else {
+            setUserRole(null);
         }
     }, [token]);
 
+    // Bootstrap auth on app load
     useEffect(() => {
         const bootstrap = async () => {
             if (!token) return;
+            
             setIsHydrating(true);
             try {
+                // Proactively clear if token is expired
                 if (isJwtExpired(token, 5)) {
                     authStorage.clear();
                     setToken(null);
@@ -49,12 +55,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 }
 
                 const profile = await userApi.getMe();
+                console.log("User profile from API:", profile);
                 setUser(profile);
-                
-                // User data se role set karo (backup)
-                if (profile.role?.name) {
-                    setUserRole(profile.role.name);
-                }
+
+                // Note: We don't set userRole here anymore - it comes from JWT
+                // This avoids race conditions and overriding
+
             } catch (err: unknown) {
                 const maybe = err as { status?: number } | undefined;
                 const status = maybe?.status ?? 0;
@@ -64,11 +70,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                     setUser(null);
                     setUserRole(null);
                 }
+                // For other errors (network/server), keep token so the app can retry later
             } finally {
                 setIsHydrating(false);
             }
         };
         void bootstrap();
+        // We intentionally run this only once on mount to bootstrap from stored token
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const setAuth = (token: string, user: User) => {
@@ -76,16 +85,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setToken(token);
         setUser(user);
         
-        // Role set karo - pehle user data se, phir JWT se fallback
-        if (user.role?.name) {
-            setUserRole(user.role.name);
-        } else {
-            try {
-                const decoded = decodeJwt(token);
-                setUserRole(decoded.roleName as string);
-            } catch (error) {
-                console.error("Failed to decode token during setAuth:", error);
-            }
+        // Set role from JWT token
+        try {
+            const decoded = decodeJwt(token);
+            setUserRole(decoded?.roleName as string);
+        } catch (error) {
+            console.error("Failed to decode token during setAuth:", error);
         }
     };
 

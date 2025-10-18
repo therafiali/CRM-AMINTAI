@@ -1,7 +1,14 @@
 import { prisma } from "../server.js";
 
 export async function findUserByEmail(email) {
-  return prisma.user.findUnique({ where: { email } });
+  return prisma.user.findUnique({
+    where: { email },
+    include: {
+      role: true,
+      department: true,
+    },
+
+  });
 }
 
 export async function createUser(data) {

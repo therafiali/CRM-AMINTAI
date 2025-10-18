@@ -5,22 +5,30 @@ import {
   SidebarHeader,
   SidebarNav,
 } from "@/components/ui/sidebar";
-import { useUser } from "@/features/auth/hooks/useUser";
+
 import { LogoutButton } from "@/features/auth/LogoutButton";
 import { Menu, X, LogOut } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import Logo from "../../assets/logo-black.png";
 import profile from "../../assets/profile.avif";
+import { useAuthContext } from "@/features/auth/context/AuthContext";
 
 export function Sidebar() {
-  const { user, isLoading } = useUser();
-  const roleId = user?.roleId ?? null;
+  const { user, userRole } = useAuthContext(); // ✅ CHANGE: Get userRole from AuthContext
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
+  // ✅ Filter routes based on user's role
   const visibleRoutes = appRoutes.filter(
-    (r) => !r.hidden && canAccessRoute(r, roleId)
+    (route) => !route.hidden && canAccessRoute(route, userRole)
   );
+
+  console.log('Sidebar debug:', {
+    userRole,
+    totalRoutes: appRoutes.length,
+    visibleRoutes: visibleRoutes.length,
+    visibleRouteLabels: visibleRoutes.map(r => r.label)
+  });
 
   // Close sidebar when route changes
   useEffect(() => {
@@ -90,24 +98,27 @@ export function Sidebar() {
 
       {/* --- User Info + Logout --- */}
       <div className="mt-4 pt-4 border-t border-border border-black p-2">
-        {isLoading ? (
+        {false ? (
           <p className="text-xs text-muted-foreground">Loading user...</p>
         ) : user ? (
-          <div className="flex items-center justify-between ">
-            <div className="flex items-center gap-3">
-              <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center overflow-hidden">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-1 flex-1 min-w-0"> 
+              <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center overflow-hidden flex-shrink-0"> 
                 <img src={profile} alt="Profile" className="h-full w-full object-cover" />
               </div>
-              <div className="flex flex-col flex-wrap w-10">
-                <span className="text-sm font-medium leading-none">
+              <div className="flex flex-col min-w-0 flex-1"> 
+                <span className="text-sm font-medium leading-none truncate capitalize">
                   {user.name || "User"}
                 </span>
-                <span className="text-xs text-wrap text-muted-foreground">
+                <span className="text-xs text-muted-foreground truncate">
                   {user.email}
+                </span>
+                {/* ✅ Show user role */}
+                <span className="text-xs text-primary font-medium capitalize">
+                  {userRole}
                 </span>
               </div>
             </div>
-
           </div>
         ) : (
           <p className="text-xs text-muted-foreground">No user found</p>

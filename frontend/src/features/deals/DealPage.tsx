@@ -1,6 +1,15 @@
+import { RoleBasedRoute } from "../auth/RoleBasedRoute";
 import { SimplifiedDealPipeline } from "./simplified-deal-pipeline";
 
 
 export default function DealsPage() {
-  return <SimplifiedDealPipeline />;
+  return (
+    <RoleBasedRoute allowedRoles={['admin']}>
+      <SimplifiedDealPipeline />;
+    </RoleBasedRoute>
+
+
+  )
+
+
 }

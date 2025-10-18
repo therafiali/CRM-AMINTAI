@@ -25,11 +25,13 @@ export async function registerUser({ name, email, password, roleId, departmentId
         departmentId: departmentId ?? null,
     });
 
+
     // ✅ 5. Generate JWT token
     const token = generateToken({
         userId: user.id,
         roleId: user.roleId,
         departmentId: user.departmentId ?? null,
+        roleName: user.roleName
     });
 
     // ✅ 6. Return sanitized result
@@ -53,6 +55,8 @@ export async function loginUser({ email, password }) {
     if (!isValid) {
         throw { status: 401, message: 'Invalid credentials' };
     }
+
+
 
     // ✅ 4. Generate token
     const token = generateToken({
