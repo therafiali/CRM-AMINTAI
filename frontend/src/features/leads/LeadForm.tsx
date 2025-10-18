@@ -41,7 +41,6 @@ export default function LeadFormModal() {
                 status: "New",
                 source: "",
                 notes: "",
-                assignedToId: 2,
             });
             setOpen(false); // ✅ close modal after success
         },

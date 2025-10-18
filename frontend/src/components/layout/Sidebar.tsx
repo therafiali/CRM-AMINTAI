@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import Logo from "../../assets/logo-black.png";
 import profile from "../../assets/profile.avif";
 import { useAuthContext } from "@/features/auth/context/AuthContext";
+import { ThemeToggle } from "../theme/theme-toggle";
 
 export function Sidebar() {
   const { user, userRole } = useAuthContext(); // ✅ CHANGE: Get userRole from AuthContext
@@ -95,6 +96,8 @@ export function Sidebar() {
           </motion.div>
         ))}
       </SidebarNav>
+
+ {/* <ThemeToggle/> */}
 
       {/* --- User Info + Logout --- */}
       <div className="mt-4 pt-4 border-t border-border border-black p-2">

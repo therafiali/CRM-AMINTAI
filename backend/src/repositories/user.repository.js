@@ -52,6 +52,9 @@ export async function findUsersPaginated({ page = 1, limit = 10 }) {
 
 export async function getUsernames() {
   return await prisma.user.findMany({
+    where: {
+      roleId: 4
+    },
     select: {
       id: true,
       name: true,
