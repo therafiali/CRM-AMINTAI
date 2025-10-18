@@ -59,9 +59,9 @@ export function FilterSidebar({
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 md:hidden">
-      <div className="absolute right-0 top-0 h-full w-80 bg-white p-6 overflow-y-auto">
-        <div className="flex justify-between items-center mb-6">
+    <div className="fixed inset-0   bg-opacity-50 z-50 ">
+      <div className="absolute right-0 top-0 h-full w-80 bg-white p-6 overflow-y-auto  border-black border-l">
+        <div className="flex justify-between items-center mb-6 ">
           <h3 className="text-lg font-semibold">Filters</h3>
           <Button variant="ghost" onClick={onClose}>Close</Button>
         </div>
