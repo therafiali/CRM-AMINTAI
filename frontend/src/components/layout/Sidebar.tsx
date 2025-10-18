@@ -102,11 +102,11 @@ export function Sidebar() {
           <p className="text-xs text-muted-foreground">Loading user...</p>
         ) : user ? (
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1 flex-1 min-w-0"> 
-              <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center overflow-hidden flex-shrink-0"> 
+            <div className="flex items-center gap-1 flex-1 min-w-0">
+              <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center overflow-hidden flex-shrink-0">
                 <img src={profile} alt="Profile" className="h-full w-full object-cover" />
               </div>
-              <div className="flex flex-col min-w-0 flex-1"> 
+              <div className="flex flex-col min-w-0 flex-1">
                 <span className="text-sm font-medium leading-none truncate capitalize">
                   {user.name || "User"}
                 </span>
@@ -162,7 +162,7 @@ export function Sidebar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsMobileOpen(false)}
-              className="fixed inset-0 bg-black/50 z-40 md:hidden"
+              className="fixed inset-0 bg-black/90 z-40 md:hidden"
             />
 
             {/* Mobile Sidebar */}
